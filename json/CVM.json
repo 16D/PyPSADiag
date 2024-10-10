@@ -9,19 +9,40 @@
   "errors": true,
   "tabs": {
     "unsorted": "Unsorted"
+    "CVM2": "CVM2"
+    "CVM3": "CVM3"
   },
   "zones": {
     "2100": {
+      "id": "Configuration_Group_Data_Values",
+      "tab": "CVM2",
+      "name": "Type of front lights",
+      "byte": 1,
+      "type": "bool",
+      "form_type": "combobox",
+      "mask": "11000000",
+      "params": {
+          "0": {
+            "name": "Halogen lamps",
+            "mask": "00000000"
+          },
+          "1": {
+            "name": "Xenon main beam headlamps",
+            "mask": "01000000"
+          }
+      }
+    },
+     "2100": {
       "id": "Configuration_Group_Data_List",
-      "tab": "unsorted",
-      "name": "Configuration group data list",
+      "tab": "CVM3",
+      "name": "Configuration Posibility",
       "byte": 0,
       "type": "raw",
       "form_type": "string"
     },
     "2101": {
       "id": "Configuration_Group_Data_Values",
-      "tab": "unsorted",
+      "tab": "CVM3",
       "name": "Configuration group data values",
       "byte": 0,
       "type": "raw",
