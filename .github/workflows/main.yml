@@ -45,7 +45,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-${{ matrix.os }}
+          name: PyPSADiag-${{ matrix.os }}
           path: dist/*
 
   release:
@@ -65,7 +65,7 @@ jobs:
         run: ls -R
 
       - name: Make files executable (Linux/Mac)
-        run: chmod +x app-* || true
+        run: chmod +x PyPSADiag-* || true
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -75,6 +75,6 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            app-linux
-            app-windows.exe
-            app-macos
+            PyPSADiag-linux
+            PyPSADiag-windows.exe
+#            PyPSADiag-macos
