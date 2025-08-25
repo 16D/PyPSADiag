@@ -68,13 +68,18 @@ jobs:
         run: chmod +x PyPSADiag-* || true
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ github.event.inputs.version }}
-          name: Release ${{ github.event.inputs.version }}
-          draft: false
-          prerelease: false
-          files: |
-            PyPSADiag-linux
-            PyPSADiag-windows.exe
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create ${{ github.ref_name }} dist/* --title ${{ github.ref_name }} --generate-notes#      - name: Create GitHub Release
+
+#        uses: softprops/action-gh-release@v2
+#        with:
+#          tag_name: ${{ github.event.inputs.version }}
+#          name: Release ${{ github.event.inputs.version }}
+#          draft: false
+#          prerelease: false
+#          files: |
+#            PyPSADiag-linux
+#            PyPSADiag-windows.exe
 #            PyPSADiag-macos
