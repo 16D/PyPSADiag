@@ -13,7 +13,7 @@ program_name = "PyPSADiag"
 icon_path = None
 program_file = None
 
-if platform_name == "darwin":
+if platform_name == "macos":
     icon_path = os.path.join(extras_dir, "macos", "icon.icns")
     program_file = "{0}.app".format(program_name)
 elif platform_name == "linux":
