@@ -63,7 +63,7 @@ jobs:
       - name: Download all build artifacts
         uses: actions/download-artifact@v4
         with:
-          name: PyPSADiag-*
+          name: PyPSADiag-windows-latest.zip
           path: dist/*
 
       - name: List downloaded files (Debugging)
