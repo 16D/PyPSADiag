@@ -48,13 +48,14 @@ jobs:
           name: PyPSADiag-${{ matrix.os }}
           path: dist/*
 
-  github-release:
+  release:
     name: Create GitHub Release
     needs:
-      - release-build
+      - build
     runs-on: ubuntu-latest
     permissions:
       contents: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -62,11 +63,10 @@ jobs:
       - name: Download all build artifacts
         uses: actions/download-artifact@v4
         with:
-          name: release-dists
-          path: dist/
+          merge-multiple: true
 
-#      - name: List downloaded files (Debugging)
-#        run: ls -R
+      - name: List downloaded files (Debugging)
+        run: ls -R
 
       - name: Make files executable (Linux/Mac)
         run: chmod +x PyPSADiag-* || true
