@@ -28,7 +28,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Build executable
-        run: pyinstaller --onefile app.py
+        run: pyinstaller main.spec
 
       - name: Rename executable
         run: |
