@@ -63,8 +63,8 @@ jobs:
       - name: Download all build artifacts
         uses: actions/download-artifact@v4
         with:
-          name: release-dists
-          path: dist/
+          name: PyPSADiag-${{ matrix.os }}
+          path: dist/*
 
       - name: List downloaded files (Debugging)
         run: ls -R
