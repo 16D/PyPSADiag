@@ -1,0 +1,68 @@
+{
+    "name": "VERINS_MOTORISES",
+    "tx_id": "76B",
+    "rx_id": "66B",
+    "protocol": "uds",
+    "key_type": "multi",
+    "keys":  {
+        "VERINS_MOTORISES": "****"
+    },
+    "coding": true,
+    "errors": true,
+    "include_zone_object": "./data/IdentUDSECU.json",
+    "tabs": {
+        "ident": "Identification",
+        "tele": "Telecoding"
+    },
+    "zones": {
+        "2100": {
+            "id": "Gauging group data values",
+            "tab": "tele",
+            "name": "Gauging group data values",
+            "type": "raw",
+            "form_type": "multi",
+            "CFG_FII_BCM_CATVM_BSG_RG_001": {
+                "name": "Trailer switch unit",
+                "byte": 0,
+                "type": "bool",
+                "form_type": "combobox",
+                "mask": "10000000",
+                "params": [
+                    {
+                        "name": "Absent",
+                        "value": "00000000"
+                    },
+                    {
+                        "name": "Present",
+                        "value": "10000000"
+                    }
+                ]
+            },
+            "CFG_FIH_BCM_BCM_CATVM_CAP_PRES_002": {
+                "name": "Presence and number of the anti-pinch sensors",
+                "byte": 0,
+                "type": "bool",
+                "form_type": "combobox",
+                "mask": "01100000",
+                "params": [
+                    {
+                        "name": "Without anti-pinch sensors",
+                        "value": "00000000"
+                    },
+                    {
+                        "name": "1 anti-pinch sensor (upper sensor)",
+                        "value": "00100000"
+                    },
+                    {
+                        "name": "2 anti-pinch sensors (left and right sensors)",
+                        "value": "01000000"
+                    },
+                    {
+                        "name": "3 anti-pinch sensors (left, right and upper sensors)",
+                        "value": "01100000"
+                    }
+                ]
+            }
+        }
+    }
+}
