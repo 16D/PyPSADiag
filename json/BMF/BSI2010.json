@@ -680,12 +680,12 @@
       "form_type": "combobox",
       "mask": "11111111",
       "params": [
-        { "value": "0", "name": "-17 - +37" },
-        { "value": "1", "name": "-25 - +37" },
-        { "value": "2", "name": "-30 - +37" },
-        { "value": "4", "name": "-17 - +45" },
-        { "value": "8", "name": "-17 - +50" },
-        { "value": "10", "name": "-30 - +45" }
+        { "value": "0", "name": "Moderate (-17 - +37)" },
+        { "value": "1", "name": "Cold (-25 - +37)" },
+        { "value": "2", "name": "Very cold (-30 - +37)" },
+        { "value": "4", "name": "Hot (-17 - +45)" },
+        { "value": "8", "name": "Very hot (-17 - +50)" },
+        { "value": "10", "name": "Cold and hot (-30 - +45)" }
       ],
       "name": "Climate type"
     },
@@ -3604,7 +3604,7 @@
       "byte": 0,
       "type": "bool",
       "form_type": "checkbox",
-      "name": "Option: Comfortable polysensory package CFG_EBK_BSI_OPT_MODE_DYN_COMFORT_000"
+      "name": "Option: Comfortable Polysensorial mode"
     },
     "2435": {
       "id": "CFG_EBL_BSI_POLYSENSORIAL_PACK_000",
@@ -3612,7 +3612,7 @@
       "byte": 0,
       "type": "bool",
       "form_type": "checkbox",
-      "name": "Option: Polisor Package CFG_EBL_BSI_POLSENSORIAL_PACK_000"
+      "name": "Option: Polysensorial Pack"
     },
     "2436": {
       "id": "CFG_EBM_BSI_OPT_EXPORT_POI_RADAR_000",
@@ -5220,7 +5220,7 @@
         { "value": "0", "name": "CFG_EW7_BSI_TYPE_CHAINE_TRACTION_001_00" },
         { "value": "1", "name": "CFG_EW7_BSI_TYPE_CHAINE_TRACTION_001_01" }
       ],
-      "name": "CFG_EW7_BSI_TYPE_CHAINE_TRACTION_001 ???" 
+      "name": "Type of traction chain" 
     },
     "2469": {
       "id": "CFG_EW8_ACQUI_PRES_PASS_AV_000",
@@ -5268,7 +5268,7 @@
       "byte": 0,
       "type": "bool",
       "form_type": "checkbox",
-      "name": "Option: Automatic City Park Assist ???" 
+      "name": "Option: Automatic City Park Assist" 
     },
     "2477": {
       "id": "CFG_EYF_BSI_STRIKER_SLIDING_DOOR_000",
@@ -5326,6 +5326,247 @@
         { "value": "1", "name": "For Korea" }
       ],
       "name": "Climate Control Calibration"
+    },
+    "23E3": {
+      "id": "CFG_DEL_BSI_PRESENCE_FMUX_AUDIO_000",
+      "tab": "unsorted",
+      "byte": 0,
+      "type": "hex",
+      "form_type": "combobox",
+      "mask": "11111111",
+      "params": [
+        { "value": "0", "name": "Absence of multiplex control panel" },
+        { "value": "1", "name": "Presence of multiplex control panel" }
+      ],
+      "name": "Type of acquisition architecture of the radio ON/OFF button"
+    },
+    "23E4": {
+      "id": "CFG_DES_BSI_TYPE_ALT_STANDARD_000",
+      "tab": "unsorted",
+      "byte": 0,
+      "type": "hex",
+      "form_type": "combobox",
+      "mask": "11111111",
+      "params": [
+        { "value": "0", "name": "Self primed" },
+        { "value": "1", "name": "L-line excited" }
+      ],
+      "name": "Type of uncontrolled alternator"
+    },
+    "23E9": {
+      "id": "CFG_DFL_BSI_TYPE_OPT_VIDE_001",
+      "tab": "unsorted",
+      "byte": 0,
+      "type": "hex",
+      "form_type": "combobox",
+      "mask": "11111111",
+      "params": [
+        { "value": "00", "name": "Absent" },
+        { "value": "01", "name": "1st level of load shedding" },
+        { "value": "02", "name": "2nd level of load shedding" }
+      ],
+      "name": "Type of vacuum optimisation module (Vacuum shedding)"
+    },
+    "244A": {
+      "id": "CFG_EJK_BSI_TYPE_BAA_AUTOLOCKING_000",
+      "tab": "unsorted",
+      "byte": 0,
+      "type": "hex",
+      "form_type": "combobox",
+      "mask": "11111111",
+      "params": [
+        { "value": "00", "name": "Function absent" },
+        { "value": "01", "name": "Activation via menu on multifunctional screen" },
+        { "value": "02", "name": "Activation via switch" },
+        { "value": "03", "name": "CFG_EJK_BSI_TYPE_BAA_AUTOLOCKING_000_03" }
+      ],
+      "name": "Presence and type of activation of the locking after closing a door controlled by the hands full access function"
+    },
+    "244E": {
+      "id": "CFG_EL6_BSI_BOITIER_SIEG_CLIM_AV_000",
+      "tab": "unsorted",
+      "byte": 0,
+      "type": "hex",
+      "form_type": "combobox",
+      "mask": "11111111",
+      "params": [
+        { "value": "00", "name": "TCU" },
+        { "value": "01", "name": "BGNCT" },
+        { "value": "02", "name": "BRNC_FIL" },
+        { "value": "03", "name": "BRNC_MUX" }
+      ],
+      "name": "Front seat heating or ventilation control unit type"
+    },
+    "2455": {
+      "id": "CFG_ENI_BSI_OPT_POLYCHROME_AMBIA_000",
+      "tab": "unsorted",
+      "byte": 0,
+      "type": "bool",
+      "form_type": "checkbox",
+      "name": "Presence of polychromatic ambiance light" 
+    },
+    "2456": {
+      "id": "CFG_ENJ_BSI_OPTION_ACRC_000",
+      "tab": "unsorted",
+      "byte": 0,
+      "type": "hex",
+      "form_type": "combobox",
+      "mask": "11111111",
+      "params": [
+        { "value": "00", "name": "Absent" },
+        { "value": "01", "name": "Present" }
+      ],
+      "name": "Presence and type of anti change report code"
+    },
+      "2457": {
+      "id": "CFG_ENL_BSI_OPTION_PLACE_POI_SCR_000",
+      "tab": "unsorted",
+      "byte": 0,
+      "type": "bool",
+      "form_type": "checkbox",
+      "name": "Allows the display of POI alert on multifunctional screen" 
+    },
+      "2459": {
+      "id": "CFG_ENW_BSI_OPT_COUPURE_MEDIA_EV_000",
+      "tab": "unsorted",
+      "byte": 0,
+      "type": "hex",
+      "form_type": "combobox",
+      "mask": "11111111",
+      "params": [
+        { "value": "0", "name": "Media shutdown during contact switchover" },
+        { "value": "1", "name": "Media shuts off when the driver's door is opened" }
+      ],
+      "name": "Radio/BTEL media cut-off type option"
+    },
+      "245D": {
+      "id": "CFG_ERA_BSI_OPT_CABIN_AIR_FILTER_000",
+      "tab": "unsorted",
+      "byte": 0,
+      "type": "hex",
+      "form_type": "combobox",
+      "mask": "11111111",
+      "params": [
+        { "value": "00", "name": "Absent" },
+        { "value": "01", "name": "Clean cabin" },
+        { "value": "02", "name": "Clean cabin and self-contained cabin filter" }
+      ],
+      "name": "Indicates a presence and type of cabin air filter"
+    },
+      "2463": {
+      "id": "CFG_ERF_BSI_OPT_VISION_NOCTURNE_000",
+      "tab": "unsorted",
+      "byte": 0,
+      "type": "bool",
+      "form_type": "checkbox",
+      "name": "Presence of Night Vision function" 
+    },
+      "2467": {
+      "id": "CFG_EW6_BSI_OPT_DISTRACTION_MODE_000",
+      "tab": "unsorted",
+      "byte": 0,
+      "type": "bool",
+      "form_type": "checkbox",
+      "name": "Option: Distraction mode" 
+    },
+      "246B": {
+      "id": "CFG_EVG_BSI_OPTION_OLVI_000",
+      "tab": "unsorted",
+      "byte": 0,
+      "type": "bool",
+      "form_type": "checkbox",
+      "name": "Option: OLVI" 
+    },
+      "246D": {
+      "id": "CFG_EWC_BSI_AMORTISEMENT_EE_000",
+      "tab": "unsorted",
+      "byte": 0,
+      "type": "bool",
+      "form_type": "checkbox",
+      "name": "Deprecation of ???" 
+    },
+      "2474": {
+      "id": "CFG_EXY_BSI_INH_MOD_ACCUEIL_ECLX_000",
+      "tab": "unsorted",
+      "byte": 0,
+      "type": "bool",
+      "form_type": "checkbox",
+      "name": "CFG_EXY_BSI_INH_MOD_ACCUEIL_ECLX_000" 
+    },
+      "2476": {
+      "id": "CFG_EYB_ORANG_BRAKE_TELLTALE_000",
+      "tab": "unsorted",
+      "byte": 0,
+      "type": "bool",
+      "form_type": "checkbox",
+      "name": "Orange brake indicator" 
+    },
+      "247E": {
+      "id": "CFG_EZH_BSI_FREEWHEELING_INHIB_000",
+      "tab": "unsorted",
+      "byte": 0,
+      "type": "bool",
+      "form_type": "checkbox",
+      "name": "Presence of freewheeling option on the vehicle"
+    },
+      "248C": {
+      "id": "CFG_F7T_BSI_TYPE_VERSION_ILV_000",
+      "tab": "unsorted",
+      "byte": 0,
+      "type": "hex",
+      "form_type": "combobox",
+      "mask": "11111111",
+      "params": [
+        { "value": "00", "name": "CFG_F7T_BSI_TYPE_VERSION_ILV_000_00" },
+        { "value": "01", "name": "CFG_F7T_BSI_TYPE_VERSION_ILV_000_01" }
+      ],
+      "name": "Version of road speed signs aquisition"
+    },
+      "2496": {
+      "id": "CFG_FU0_BSI_TYPE_DIAG_ECL_AV_LED_001",
+      "tab": "unsorted",
+      "byte": 0,
+      "type": "hex",
+      "form_type": "combobox",
+      "mask": "11111111",
+      "params": [
+        { "value": "00", "name": "Diagnostics via pulse-width modulated communication line" },
+        { "value": "01", "name": "Diagnostics via LIN communication line" },
+        { "value": "02", "name": "Without diagnostics" },
+        { "value": "03", "name": "Diagnostics by current measurement" }
+      ],
+      "name": "Presence and type of LED front lighting diagnostics"
+    },
+      "2497": {
+      "id": "CFG_GAI_BSI_TYPE_EDR_REGULATION_000",
+      "tab": "unsorted",
+      "byte": 0,
+      "type": "hex",
+      "form_type": "combobox",
+      "mask": "11111111",
+      "params": [
+        { "value": "00", "name": "No regulation" },
+        { "value": "01", "name": "US_V1" },
+        { "value": "02", "name": "EUROPE_V1" },
+        { "value": "03", "name": "CHINA_V1" },
+        { "value": "04", "name": "CHINA_V2" },
+        { "value": "05", "name": "EUROPE_V2" }
+      ],
+      "name": "Type of Event Data Recording regulation"
+    },
+      "24A1": {
+      "id": "CFG_GGD_BSI_TYPE_HMI_ADVCNP_000",
+      "tab": "unsorted",
+      "byte": 0,
+      "type": "hex",
+      "form_type": "combobox",
+      "mask": "11111111",
+      "params": [
+        { "value": "00", "name": "CFG_GGD_BSI_TYPE_HMI_ADVCNP_000_00" },
+        { "value": "01", "name": "CFG_GGD_BSI_TYPE_HMI_ADVCNP_000_01" },
+        { "value": "02", "name": "CFG_GGD_BSI_TYPE_HMI_ADVCNP_000_02" }
+      ],
+      "name": "Type of overspeed warning"
     }
   }
 }

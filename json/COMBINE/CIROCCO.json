@@ -199,7 +199,7 @@
                 {
                     "extra_name": "DQ6_CMB_LKA_VAL_PRESENCE",
                     "name_original": "DQ6",
-                    "name": "Presence of Lane Keeping Assist (LKA) well in Personal Mode",
+                    "name": "Presence of the blind spot monitoring function on the vehicle",
                     "byte": 3,
                     "mask": "00001000",
                     "form_type": "checkbox",
@@ -436,7 +436,7 @@
                 {
                     "extra_name": "CFG_EWQ_CMB_HY_MYH_000",
                     "name_original": "EWQ",
-                    "name": "Precense of internal combustion engine",
+                    "name": "Hybrid dash: presense of internal combustion engine",
                     "byte": 15,
                     "mask": "00000001",
                     "form_type": "checkbox",
@@ -445,7 +445,7 @@
                 {
                     "extra_name": "CFG_EWP_CMB_HY_MEL_AR_000",
                     "name_original": "EWP",
-                    "name": "Precense of rear electric motor",
+                    "name": "Hybrid dash: presense of rear electric motor",
                     "byte": 16,
                     "mask": "10000000",
                     "form_type": "checkbox",
@@ -533,7 +533,7 @@
                 {
                     "extra_name": "E3J_ATT_DG_HY_PRESENT",
                     "name_original": "E3J",
-                    "name": "Hybrid outlook",
+                    "name": "Hybrid dash",
                     "byte": 18,
                     "mask": "01000000",
                     "form_type": "checkbox",
@@ -721,11 +721,20 @@
                     "extra_name": "CFG_GBB_CMB_TELLTAL_PARK_BR_TYPE_000",
                     "zoneLength": 22,
                     "name_original": "CFG_GBB_CMB_TELLTAL_PARK_BR_TYPE_000",
-                    "name": "Display type of handbrake",
+                    "name": "Type of parking brake",
                     "byte": 21,
                     "mask": "10000000",
-                    "form_type": "checkbox",
-                    "available_logic": "active_high"
+                    "form_type": "combobox",
+                    "params": [
+                        {
+                            "mask": "00000000",
+                            "name": "Handbrake"
+                        },
+                        {
+                            "mask": "10000000",
+                            "name": "Electric parking brake"
+                        }
+                    ]    
                 }
             ]
         },
@@ -1629,8 +1638,8 @@
                     ]
                 },
                 {
-                    "extra_name": "CFG_EHV_CMB_ETSR_CFG_000",
-                    "name_original": "CFG_EHV_CMB_ETSR_CFG_000",
+                    "extra_name": "CFG_EHV_CMB_ETSR_CFG_STATE_000",
+                    "name_original": "CFG_EHV_CMB_ETSR_CFG_STATE_000",
                     "name": "Extended Traffic Signs Recognition",
                     "byte": 5,
                     "mask": "00000001",
@@ -1640,17 +1649,17 @@
                 {
                     "extra_name": "CFG_EIC_CMB_ECOACH_CFG_000",
                     "name_original": "CFG_EIC_CMB_ECOACH_CFG_000",
-                    "name": "Eco Coaching",
+                    "name": "Eco Coaching well in Personal Mode",
                     "byte": 6,
                     "mask": "00000001",
                     "form_type": "checkbox",
                     "available_logic": "active_high"
                 },
                 {
-                    "extra_name": "CFG_GN8_CMB_DAT_DG_BRAND_CFG_003",
+                    "extra_name": "CFG_DQY_CMB_DAT_DG_BRAND_CFG_001",
                     "zoneLength": 8,
                     "read_only": true,
-                    "name_original": "CFG_GN8_CMB_DAT_DG_BRAND_CFG_003",
+                    "name_original": "CFG_DQY_CMB_DAT_DG_BRAND_CFG_001",
                     "name": "Brand configuration",
                     "byte": 7,
                     "mask": "00011111",
@@ -1982,7 +1991,7 @@
                     "extra_name": "F4N_CMB_AMBIANCE_DEFAULT",
                     "name_original": "F4N",
                     "name": "Number of the default ambience",
-                    "byte": 35,
+                    "byte": 34,
                     "mask": "00001110",
                     "type": "raw",
                     "form_type": "string"

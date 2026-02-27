@@ -5,7 +5,7 @@
     "protocol": "uds",
     "key_type": "multi",
     "keys": {
-        "I-Cockpit 3D (2024)": "A13C"
+        "VISTEON": "A13C"
     },
     "include_zone_object": "./data/IdentUDSECU.json",
     "tabs": {
@@ -76,7 +76,7 @@
                 {
                     "extra_name": "CFG_EWQ_CMB_HY_MYH_000",
                     "name_original": "EWQ",
-                    "name": "Precense of internal combustion engine",
+                    "name": "Hybrid dash: presense of internal combustion engine",
                     "byte": 0,
                     "mask": "00000001",
                     "form_type": "checkbox",
@@ -208,7 +208,7 @@
                 {
                     "extra_name": "CFG_EWP_CMB_HY_MEL_AR_000",
                     "name_original": "EWP",
-                    "name": "Presense of rear electric motor",
+                    "name": "Hybrid dash: presense of rear electric motor",
                     "byte": 3,
                     "mask": "00100000",
                     "form_type": "checkbox",
@@ -225,7 +225,7 @@
                 {
                     "extra_name": "DQ6_CMB_LKA_VAL_PRESENCE",
                     "name_original": "DQ6",
-                    "name": "Presence of Lane Keeping Assist (LKA)",
+                    "name": "Presence of the blind spot monitoring function on the vehicle",
                     "byte": 3,
                     "mask": "00001000",
                     "form_type": "checkbox",
@@ -488,7 +488,7 @@
                 {
                     "extra_name": "E3J_ATT_DG_HY_PRESENT",
                     "name_original": "E3J",
-                    "name": "Hybrid outlook",
+                    "name": "Hybrid dash",
                     "byte": 18,
                     "mask": "01000000",
                     "form_type": "checkbox",
@@ -662,18 +662,18 @@
                 {
                     "extra_name": "CFG_GBB_CMB_TELLTAL_PARK_BR_TYPE_000",
                     "name_original": "CFG_GBB_CMB_TELLTAL_PARK_BR_TYPE_000",
-                    "name": "Type of handbrake",
+                    "name": "Type of parking brake",
                     "byte": 22,
                     "mask": "01000000",
                     "form_type": "combobox",
                     "params": [
                         {
                             "mask": "01000000",
-                            "name": "Electric handbrake"
+                            "name": "Electric parking brake"
                         },
                         {
                             "mask": "00000000",
-                            "name": "Manual handbrake"
+                            "name": "Handbrake"
                         }
                     ]
                 },
@@ -701,12 +701,21 @@
                     "extra_name": "CFG_GN6_CMB_DAT_DG_HY_TYPE_HY_000",
                     "zoneLength": 24,
                     "name_original": "CFG_GN6_CMB_DAT_DG_HY_TYPE_HY_000",
-                    "name": "CFG_GN6_CMB_DAT_DG_HY_TYPE_HY_000",
+                    "name": "Type of hybrid system",
                     "byte": 23,
                     "mask": "00000001",
-                    "form_type": "checkbox",
-                    "available_logic": "active_high"
-                }
+                    "form_type": "combobox",
+                    "params": [
+                        {
+                            "mask": "00000000",
+                            "name": "No Hybrid"
+                        },
+                        {
+                            "mask": "00000001",
+                            "name": "MHEV"
+                        }
+                    ]    
+                }   
             ]
         },
         "2101": {
