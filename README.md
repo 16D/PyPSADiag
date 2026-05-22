@@ -53,6 +53,15 @@ NEA2020 cars (newer ones) have CAN-DIAG on pins 6/14, so these cars do not need 
 
 - The OBDII device MUST be a good one, not 1$ clone from Temu/Aliexpress. It should be branded (vLinker, vGate, etc) and should have 'real' mac-address. If the OBDII device is of poor quality - then, most likely, you will simply not be able to read zones at all.
 
+Known issues:
+- AAS is unreadable for some reason, for now use Arduino.
+
+Use of the PIN Extractor
+-----
+This works *only* with ELM327, which should be plugged directly into OBD. No additional adapters required.
+Usage is simple: plug into ODB, connect to ELM327 and press 'Extract PIN' on PIN Extractor tab.
+PIN Calculator tab is able to calculate PIN without a car, if you have relevant data from other sources. E.g. - if you know what to paste into PIN Calculator - you will get your PIN.
+
 Use a Release
 -----
 - Get release a from [Download Release](https://github.com/Barracuda09/PyPSADiag/releases) There is Windows, Linux and macOS versions
