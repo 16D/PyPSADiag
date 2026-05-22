@@ -1,49 +1,5 @@
 """
-PINExtractor.py — PSA-family vehicle PIN extraction from captured handshake pairs.
-
-Given one or more (challenge, response) pairs captured from the diagnostic
-CAN bus during ignition, recover the 4-character ASCII PIN that the BSI
-uses to authenticate the ECU.
-
-Pair semantics (verified by full reverse-engineering of the AEE2010 BSI
-firmware that drives the handshake):
-
-  * Challenge = 4 payload bytes of CAN frame 0x072 (sent by ECM, arrives FIRST)
-  * Response  = 4 payload bytes of CAN frame 0x0A8 (sent by BSI, arrives SECOND)
-  * The cipher relation is:  compute_response(PIN, challenge) == response
-
-== Algorithm ==
-
-  Two constant tuples (the "ludwig-v" style transform PSA uses across
-  multiple security-access mechanisms):
-
-      sec_1 = (0xB2, 0x3F, 0xAA)
-      sec_2 = (0xB1, 0x02, 0xAB)
-
-  compute_response takes the 4-byte PIN (ASCII, alphabet 0-9 + A-Z) and the
-  4-byte challenge (CAN 0x072 payload bytes 1..4, packed MSB-first as uint32):
-
-      b0, b1, b2, b3 = challenge bytes   (b0 = MSB)
-      p0, p1, p2, p3 = pin bytes         (p0 = first char)
-
-      t1 = transform(b0, b2, sec_1)
-      t2 = transform(p0, p3, sec_2)
-      res_msb = t1 | t2
-
-      t3 = transform(b1, b3, sec_2)
-      t4 = transform(p1, p2, sec_1)
-      res_lsb = t3 | t4
-
-      response = (res_msb << 16) | res_lsb     (MSB-first uint32)
-
-  Search space: 36^4 = 1,679,616 candidates.  A single (challenge, response)
-  pair leaves ~8-15 colliding PINs; 2+ pairs almost always converge to a
-  unique answer.
-
-Same `transform` primitive (with different byte arrangement) is also used
-for the 16-bit UDS Security-Access ECU Key (services 27 03 / 27 04) on
-PSA ECUs — see EcuKeyBruteforce.py.  This module is exclusively for the
-4-character ASCII PIN exchanged between BSI and ECM.
+PINExtractor.py
 """
 from __future__ import annotations
 
@@ -80,13 +36,6 @@ def _transform(a: int, b: int, sec) -> int:
 
 def compute_response(pin: bytes, challenge: int) -> int:
     """Compute the expected handshake response.
-
-    pin       : 4 ASCII bytes drawn from ALPHABET (0-9 + A-Z)
-    challenge : uint32 — the 4 payload bytes of CAN frame 0x072 packed
-                MSB-first.  Example payload "9A FC F8 47" -> 0x9AFCF847.
-
-    Returns: uint32 response — the 4 payload bytes the BSI sends on CAN
-    frame 0x0A8 (also packed MSB-first).
     """
     b0 = (challenge >> 24) & 0xFF
     b1 = (challenge >> 16) & 0xFF
@@ -110,9 +59,6 @@ def compute_response(pin: bytes, challenge: int) -> int:
 class PinExtractor:
     """Search the full 36^4 alphanumeric space for a PIN that satisfies
     every (challenge, response) pair given.
-
-    Returns the equivalence class — almost always a single PIN once 2+
-    pairs are supplied.
     """
 
     def __init__(self, pairs: Iterable[Tuple[int, int]]):

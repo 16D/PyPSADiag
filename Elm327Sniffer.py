@@ -34,9 +34,6 @@ INIT_SEQUENCE = [
 
 
 def _compute_can_filter_mask(ids):
-    """Compute the tightest (filter, mask) pair such that every ID in `ids`
-    passes the ELM's CAN acceptance test  ((can_id & mask) == (filter & mask)).
-    """
     ids = sorted(set(int(x) & 0x7FF for x in ids))
     if not ids:
         return (0x000, 0x000)
@@ -50,11 +47,6 @@ def _compute_can_filter_mask(ids):
     return (flt, mask)
 
 
-# Regex matching an ATMA line.  With ATH1 + ATD1 + ATCAF0 the format is:
-#                  "072 5 00 74 EE 31 7F"
-#                  └id┘ └DLC┘ └─── payload bytes ────┘
-# The DLC byte (single hex digit, 0-F) is OPTIONAL — older firmware
-# without ATD1 omits it; we accept both forms.
 _LINE_RE = re.compile(
     r"^\s*(?P<id>[0-9A-Fa-f]{3,8})\s+"
     r"(?:(?P<dlc>[0-9A-Fa-f])\s+)?"
@@ -65,6 +57,16 @@ _LINE_RE = re.compile(
 # ── Sniffer (Qt-aware) ─────────────────────────────────────────────────────
 
 class Elm327Sniffer(QObject):
+    """ELM327 passive sniffer over a CALLER-OWNED serial port.
+
+    Usage:
+        s = Elm327Sniffer(parent_serial)        # borrow caller's port
+        s.frameReceived.connect(on_frame)
+        s.statusChanged.connect(on_status)
+        s.start_sniff([0x072, 0x0A8])
+        ...
+        s.stop_sniff()                          # gives the port back
+    """
 
     # int can_id, bytes payload
     frameReceived = Signal(int, bytes)

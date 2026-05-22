@@ -1,4 +1,4 @@
-"""CanFrameSniffDialog — PIN Extractor dialog with live 0x072/0x0A8 view."""
+"""CanFrameSniffDialog — PIN Extractor dialog."""
 from __future__ import annotations
 
 import re
@@ -54,12 +54,6 @@ _PAIR_MAX_GAP_MS = 50.0
 
 def _pair_by_timestamp(chal_ts_list, resp_ts_list, max_pairs=None
                         ) -> List[Tuple[bytes, bytes]]:
-    """Pair 0x072 challenges with 0x0A8 responses by timestamp proximity.
-
-    Filters: payload length == 5, service byte 0x00 for 0x072 / 0x04 for
-    0x0A8 (drops 0x02-prefixed heartbeats). Each response is matched to
-    its closest unused challenge inside the window above.
-    """
     chals = sorted(
         [(p[1:5], ts) for p, ts in chal_ts_list
          if len(p) == 5 and p[0] == 0x00],
@@ -124,7 +118,7 @@ class _PayloadAggregator:
 # ── Embedded sniffer view ──────────────────────────────────────────────────
 
 class _SnifferTab(QWidget):
-    """Two aggregated frame tables (0x072 / 0x0A8) + Clear/Save.
+    """Two aggregated frame tables + Clear/Save.
     Owns the Elm327Sniffer; Start/Stop is driven from the PIN Extractor."""
 
     def __init__(self, serial_port: serial.Serial, log_callback,
