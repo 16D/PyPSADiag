@@ -1,44 +1,5 @@
 """
-Elm327Sniffer.py — Passive CAN-frame sniffer driving an ELM327 in ATMA
-(Monitor All) mode over a SHARED serial port supplied by the caller.
-
-The caller (typically PyPSADiag's main window) owns the pyserial.Serial
-connection and passes it in.  The sniffer borrows the port for the
-duration of a sniff session: it sends the ELM init sequence, starts a
-reader thread that emits each parsed CAN frame as a Qt signal, and on
-stop it tears down ATMA and releases the port back to the caller.
-
-Targets the PSA HS-CAN-DIAG bus on OBD pins 6/14 (500 kbps, ISO 15765-4
-11-bit).  Designed for the immobilizer use-case (capture CAN IDs 0x072
-and 0x0A8 during ignition cycles) but the ID filter list is generic.
-
-Init + filtering strategy
--------------------------
-Established empirically against multiple ELM327 v1.5 adapters (both
-quality units like Vgate iCar Pro and cheap CH340-based clones).
-
-  Init sequence (in order):
-      ATZ        reset
-      ATD        defaults restore
-      ATE0       echo off
-      ATCFC1     CAN flow control on
-      ATH1       headers on (we need CAN ID in output)
-      ATSP6      ISO 15765-4 11/500
-      ATD1       display DLC byte
-      ATH1       headers on (re-asserted after ATD1)
-      ATAL       allow long messages (>7 bytes)
-      ATCAF0     auto-formatting OFF (raw frame passthrough)
-      ATCF...    CAN filter pattern (computed from the requested ID list)
-      ATCM...    CAN mask (computed for the requested ID list)
-      ATMA       monitor all (start)
-
-  Filtering: a HARDWARE filter is installed via the classic ATCF/ATCM
-  commands (NOT the STN-extended STFAP) — these work on every ELM327
-  v1.5+ clone.  Without HW filtering, the cheap clones overflow their
-  tiny internal buffer in fractions of a second on a 500 kbps bus and
-  emit "BUFFER FULL", dropping out of ATMA.  We compute the tightest
-  filter+mask combo that lets all requested IDs through; Python-side
-  filtering then trims the result down to exactly the wanted IDs.
+Elm327Sniffer.py
 """
 from __future__ import annotations
 
@@ -75,18 +36,6 @@ INIT_SEQUENCE = [
 def _compute_can_filter_mask(ids):
     """Compute the tightest (filter, mask) pair such that every ID in `ids`
     passes the ELM's CAN acceptance test  ((can_id & mask) == (filter & mask)).
-
-    For multiple IDs we set mask bits only where the IDs agree (mask = ~XOR_all),
-    and the filter to the common bit pattern.  This may also let in 2^N
-    "spurious" IDs where N = number of disagreeing bits, but Python-side
-    filtering removes those.
-
-    Returns (filter_int, mask_int) — both 11-bit values (0..0x7FF).
-
-    Examples:
-        ids = [0x0A8]            -> (0x0A8, 0x7FF)   exact filter
-        ids = [0x0A8, 0x072]     -> (0x020, 0x725)   passes 32 IDs total
-        ids = []                 -> (0x000, 0x000)   pass-all
     """
     ids = sorted(set(int(x) & 0x7FF for x in ids))
     if not ids:
@@ -116,16 +65,6 @@ _LINE_RE = re.compile(
 # ── Sniffer (Qt-aware) ─────────────────────────────────────────────────────
 
 class Elm327Sniffer(QObject):
-    """ELM327 passive sniffer over a CALLER-OWNED serial port.
-
-    Usage:
-        s = Elm327Sniffer(parent_serial)        # borrow caller's port
-        s.frameReceived.connect(on_frame)
-        s.statusChanged.connect(on_status)
-        s.start_sniff([0x072, 0x0A8])
-        ...
-        s.stop_sniff()                          # gives the port back
-    """
 
     # int can_id, bytes payload
     frameReceived = Signal(int, bytes)
@@ -146,11 +85,6 @@ class Elm327Sniffer(QObject):
     # ── Start / Stop monitoring ────────────────────────────────────────────
     def start_sniff(self, ids: Iterable[int]):
         """Initialise the ELM and enter ATMA (Monitor All) mode.
-
-        Runs the full INIT_SEQUENCE, then installs the computed ATCF/ATCM
-        hardware filter, then sends ATMA.  Spawns a reader thread that
-        emits frameReceived(can_id, payload_bytes) for every matching
-        frame.  Call stop_sniff() to tear down.
         """
         if self._serial is None or not self._serial.is_open:
             self.errorOccurred.emit("Serial port not open.")
