@@ -10,10 +10,17 @@
    of the License, or (at your option) any later version.
 """
 
+import re
 import threading
 import time
 import serial
 import serial.tools.list_ports
+
+
+def _natural_com_key(name: str):
+    """Sort key so COM4 comes before COM12 (numeric, not lexicographic)."""
+    m = re.search(r"\d+", name or "")
+    return (int(m.group()) if m else 0, name or "")
 
 
 class BluetoothAdapter:
@@ -88,6 +95,10 @@ class BluetoothAdapter:
                 bt_ports.append(port)
             else:
                 other_ports.append(port)
+
+        # Natural sort within each group: COM4 before COM12.
+        bt_ports.sort(key=lambda p: _natural_com_key(p.device))
+        other_ports.sort(key=lambda p: _natural_com_key(p.device))
 
         self.log(f"Found {len(bt_ports)} Bluetooth port(s), {len(other_ports)} other port(s)", ui=True)
 
@@ -674,7 +685,12 @@ class BluetoothAdapter:
             return ""
 
         # Find the first frame that looks like a real ISO-TP response
-        # (skip any stale noise lines)
+        # (skip any stale noise lines).  Track NRC 78 (Response Pending)
+        # separately: if it's the ONLY thing we got, return it cleaned
+        # (PCI byte stripped) so the upper layer's "7F XX 78" detector
+        # in DiagnosticCommunication.writeECUCommand matches and re-reads
+        # the bus to catch the slow ECU's real response (AAS does this).
+        last_nrc78 = None
         for frame in hex_lines:
             first_byte = int(frame[0:2], 16)
             frame_type = (first_byte >> 4) & 0x0F
@@ -685,8 +701,9 @@ class BluetoothAdapter:
                 if data_len == 0 or data_len > 7:
                     continue
                 data = frame[2:2 + data_len * 2]
-                # Skip NRC 78 (Response Pending) — real response follows
+                # Skip NRC 78 (Response Pending) — real response may follow
                 if len(data) >= 6 and data[0:2] == "7F" and data[4:6] == "78":
+                    last_nrc78 = data
                     continue
                 return data
 
@@ -725,6 +742,13 @@ class BluetoothAdapter:
                     self.log(f"Multi-frame incomplete: {got}/{total_len} bytes")
                     self._multiframe_incomplete = True
                 return result
+
+        # All frames in this window were Response Pending NRCs — return
+        # the last one cleaned (no PCI byte) so the upper layer detects
+        # "7F XX 78" and re-reads via readData() / ATMA to catch the slow
+        # ECU's real response (e.g. AAS on session 10 03).
+        if last_nrc78 is not None:
+            return last_nrc78
 
         # Fallback: return longest hex line as raw data
         return max(hex_lines, key=len)

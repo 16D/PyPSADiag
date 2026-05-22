@@ -374,6 +374,7 @@ class MainWindow(QMainWindow):
         self.ui.disableEcoModeAction.triggered.connect(self.disableEcoMode)
         self.ui.visioparkCalibrationAction.triggered.connect(self.visioparkCalibration)
         self.ui.bruteforceKeyAction.triggered.connect(self.bruteforceKey)
+        self.ui.canFrameSnifferAction.triggered.connect(self.openCanFrameSniffer)
         self.ui.hideNoResponseZone.stateChanged.connect(self.hideNoResponseZones)
 
         # Connect Other/General signals to slots
@@ -396,8 +397,10 @@ class MainWindow(QMainWindow):
         self.ui.readEcuFaults.setEnabled(False)
         self.ui.commandsMenu.setEnabled(False)
         self.ui.disableEcoMode.setEnabled(False)
+        self.ui.disableEcoModeAction.setEnabled(False)
         self.ui.visioparkCalibrationAction.setEnabled(False)
         self.ui.bruteforceKeyAction.setEnabled(False)
+        self.ui.canFrameSnifferAction.setEnabled(False)
         self.ui.virginWriteZone.setCheckState(Qt.Unchecked)
         self.ui.writeSecureTraceability.setCheckState(Qt.Checked)
 #        self.ui.useSketchSeedGenerator.setCheckState(Qt.Unchecked)
@@ -594,8 +597,10 @@ class MainWindow(QMainWindow):
             self.ui.DisconnectPort.setEnabled(True)
             self.ui.commandsMenu.setEnabled(True)
             self.ui.disableEcoMode.setEnabled(True)
+            self.ui.disableEcoModeAction.setEnabled(True)
             self.ui.visioparkCalibrationAction.setEnabled(True)
             self.ui.bruteforceKeyAction.setEnabled(True)
+            self.ui.canFrameSnifferAction.setEnabled(True)
 
             if isinstance(self.ecuObjectList, dict) and len(self.ecuObjectList) > 0:
                 self.setEcuCommandsState(True)
@@ -630,8 +635,10 @@ class MainWindow(QMainWindow):
         self.ui.rebootEcu.setEnabled(enabled)
         self.ui.commandsMenu.setEnabled(enabled)
         self.ui.disableEcoMode.setEnabled(enabled)
+        self.ui.disableEcoModeAction.setEnabled(enabled)
         self.ui.visioparkCalibrationAction.setEnabled(enabled)
         self.ui.bruteforceKeyAction.setEnabled(enabled)
+        self.ui.canFrameSnifferAction.setEnabled(enabled)
 
     @Slot()
     def hideNoResponseZones(self, state):
@@ -714,8 +721,10 @@ class MainWindow(QMainWindow):
             self.ui.rebootEcu.setEnabled(True)
             self.ui.commandsMenu.setEnabled(True)
             self.ui.disableEcoMode.setEnabled(True)
+            self.ui.disableEcoModeAction.setEnabled(True)
             self.ui.visioparkCalibrationAction.setEnabled(True)
             self.ui.bruteforceKeyAction.setEnabled(True)
+            self.ui.canFrameSnifferAction.setEnabled(True)
             self.updateEcuTxRxLabel()
 
     @Slot()
@@ -1040,6 +1049,48 @@ class MainWindow(QMainWindow):
             self.serialController, tx, rx, proto, self.writeToOutputView, self
         )
         dialog.exec()
+
+    @Slot()
+    def openCanFrameSniffer(self):
+        """Open the CAN-frame sniffer + PIN extractor dialog.
+
+        Uses the existing PyPSADiag serial connection (must be connected
+        via the main "Connect" button first).  The dialog drives the
+        adapter into ATMA (Monitor All) mode on the 500 kbps HS-CAN-DIAG
+        bus (OBD pins 6/14), aggregates frames with IDs 0x072 (challenge,
+        ECM) and 0x0A8 (response, BSI), and feeds captured pairs to the
+        PIN extractor to recover the 4-char ASCII PIN.
+
+        All status / error / debug output goes to PyPSADiag's main console.
+        Non-modal — user can keep working in the main window while sniff
+        is running.
+        """
+        if not self.serialController.isOpen():
+            self.writeToOutputView(
+                "[PinExtractor] Connect to OBD via PyPSADiag main window first "
+                "(serial mode, ELM327 adapter on COM port).")
+            return
+
+        # The dialog borrows the raw pyserial.Serial held by the SerialPort
+        # transport.  VCI / Bluetooth / WebSocket modes don't expose a raw
+        # serial object, so we bail out cleanly if that's the case.
+        transport = getattr(self.serialController, 'transport', None)
+        raw_serial = getattr(transport, 'serialPort', None)
+        if raw_serial is None or not hasattr(raw_serial, 'is_open'):
+            self.writeToOutputView(
+                "[PinExtractor] Requires a serial-port connection (Arduino "
+                "or raw ELM327 adapter on COM port).  Current transport "
+                "does not expose a raw serial object.")
+            return
+
+        # Lazy import so sniffer deps don't slow main startup
+        from CanFrameSniffDialog import CanFrameSniffDialog
+        # Keep a reference so the dialog isn't GC'd when this slot returns
+        self._canFrameSnifferDialog = CanFrameSniffDialog(
+            serial_port=raw_serial,
+            log_callback=self.writeToOutputView,
+            parent=self)
+        self._canFrameSnifferDialog.show()
 
     @Slot()
     def csvReadCallback(self, value: list):
