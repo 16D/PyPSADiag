@@ -2172,6 +2172,19 @@
                 }
             ]
         },
+        "D70A": {
+            "name": "Calibration_Mileage",
+            "tab": "cal",
+            "type": "raw",
+            "form_type": "multi",
+            "Mileage": {
+                "name": "Mileage",
+                "byte": 4,
+                "mask": "111111111111111111111111",
+                "type": "mileage",
+                "form_type": "string"
+            }
+        },
         "0201": {
             "name": "Calibration_0201",
             "tab": "cal",
@@ -2237,6 +2250,20 @@
         },
         "D600": {
             "name": "Calibration_Fct_D600",
+            "tab": "cal",
+            "type": "raw",
+            "byte": 0,
+            "form_type": "string"
+        },
+        "D700": {
+            "name": "Calibration_Fct_D700",
+            "tab": "cal",
+            "type": "raw",
+            "byte": 0,
+            "form_type": "string"
+        },
+        "DA00": {
+            "name": "Calibration_Fct_DA00",
             "tab": "cal",
             "type": "raw",
             "byte": 0,
