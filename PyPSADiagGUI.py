@@ -208,6 +208,9 @@ class PyPSADiagGUI(object):
 
         self.bruteforceKeyAction = QAction(self.commandsMenu)
         self.commandsMenu.addAction(self.bruteforceKeyAction)
+
+        self.canFrameSnifferAction = QAction(self.commandsMenu)
+        self.commandsMenu.addAction(self.canFrameSnifferAction)
         ###################################################
 
         ###################################################
@@ -433,6 +436,7 @@ class PyPSADiagGUI(object):
         self.disableEcoModeAction.setText(i18n().tr("Disable Eco Mode"))
         self.visioparkCalibrationAction.setText(i18n().tr("Visiopark Calibration"))
         self.bruteforceKeyAction.setText(i18n().tr("Bruteforce ECU Key..."))
+        self.canFrameSnifferAction.setText(i18n().tr("PIN Extractor"))
         self.languageMenu.setTitle(i18n().tr("Language"))
 
     def setEcuTxRxText(self, txId: str, rxId: str, protocol: str):

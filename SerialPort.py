@@ -19,11 +19,18 @@
    Or, point your browser to http://www.gnu.org/copyleft/gpl.html
 """
 
+import re
 import time
 import serial.tools.list_ports
 
 from EcuSimulation import EcuSimulation
 from i18n import i18n
+
+
+def _natural_com_key(name: str):
+    """Sort key so COM4 comes before COM12 (numeric, not lexicographic)."""
+    m = re.search(r"\d+", name or "")
+    return (int(m.group()) if m else 0, name or "")
 
 
 class SerialPort():
@@ -39,7 +46,8 @@ class SerialPort():
     def fillPortNameCombobox(self, combobox):
         combobox.clear()
         comPorts = serial.tools.list_ports.comports()
-        nameList = list(port.device for port in comPorts)
+        nameList = sorted((port.device for port in comPorts),
+                          key=_natural_com_key)
         for name in nameList:
             combobox.addItem(name)
 
