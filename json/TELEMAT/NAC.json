@@ -3329,7 +3329,7 @@
                     "extra_name": "NOM_ITEM6_FAMILLE_1",
                     "name_original": "DZ5",
                     "name": "Vehicule menu 1 Item 6",
-                    "byte": 7,
+                    "byte": 9,
                     "mask": "11111111",
                     "form_type": "combobox",
                     "params": [
