@@ -384,4 +384,10 @@ class EcuZoneTreeViewWidget(QTreeWidget):
             # Valid value: undo a previous "no response" disable so reloading a
             # correct CSV re-enables a zone that errored on an earlier load.
             self.markItemAsNormal(cellItem)
-            cellItem.changeZoneOption(cellItem, data, valueType)  
+            # Multi-config zone headers are painted green at build time
+            # (markItemAsRootLevel). markItemAsNormal repaints BASE_COLOR, which
+            # is right for single zones but wipes a header's green on recovery,
+            # so restore it for multi-zone roots.
+            if isinstance(cellItem, EcuMultiZoneTreeWidgetItem):
+                self.markItemAsRootLevel(cellItem)
+            cellItem.changeZoneOption(cellItem, data, valueType) 
