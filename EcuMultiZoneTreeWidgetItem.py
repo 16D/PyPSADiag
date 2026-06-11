@@ -90,6 +90,14 @@ class EcuMultiZoneTreeWidgetItem(QTreeWidgetItem):
 
     def changeZoneOption(self, root, data: str, valueType: str):
         self.selfUpdate = True
+        # Reset state from any previous load (e.g. a shorter / invalid CSV that
+        # tripped integrity) so each CSV (re)load starts from a clean slate,
+        # instead of staying disabled/red after one bad file.
+        self.integrity = True
+        for index in range(root.childCount()):
+            cellItem = root.child(index)
+            widget = cellItem.treeWidget().itemWidget(cellItem, 2)
+            self.__clearWidget(widget, cellItem)
         try:
             # Set Root value of Multi Config zone
             widget = root.treeWidget().itemWidget(root, 2)
@@ -196,4 +204,4 @@ class EcuMultiZoneTreeWidgetItem(QTreeWidgetItem):
     @Slot()
     def stateChanged(self, item: int):
         self.__update()
- 
+  
