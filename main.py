@@ -849,6 +849,7 @@ class MainWindow(QMainWindow):
                 return
 
             # Check if we have the correct sketch version. Only Vlud V1.9 sketch is supported.
+        if self.diagtool_type.lower() == "serial":
             cmd = "V"
             self.writeToOutputView("> " + cmd)
             receiveData = self.serialController.sendReceive(cmd)
