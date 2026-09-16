@@ -848,7 +848,7 @@ class MainWindow(QMainWindow):
                 self.writeToOutputView(i18n().tr("Protocol not supported yet!"))
                 return
 
-            # Check if we have the correct sketch version. Only Vlud V1.9 sketch is supported.
+            # Check if we have the correct sketch version for Arduino. Only Vlud V1.9 sketch is supported.
         if self.diagtool_type.lower() == "serial":
             cmd = "V"
             self.writeToOutputView("> " + cmd)
