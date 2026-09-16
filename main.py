@@ -849,14 +849,14 @@ class MainWindow(QMainWindow):
                 return
 
             # Check if we have the correct sketch version for Arduino. Only Vlud V1.9 sketch is supported.
-        if self.diagtool_type.lower() == "serial":
-            cmd = "V"
-            self.writeToOutputView("> " + cmd)
-            receiveData = self.serialController.sendReceive(cmd)
-            self.writeToOutputView("< " + receiveData)
-            if float(receiveData) > 1.9:
-                self.writeToOutputView(i18n().tr("Flashing only supported with sketch version V1.9"))
-                return
+            if self.diagtool_type.lower() == "serial":
+                cmd = "V"
+                self.writeToOutputView("> " + cmd)
+                receiveData = self.serialController.sendReceive(cmd)
+                self.writeToOutputView("< " + receiveData)
+                if float(receiveData) > 1.9:
+                    self.writeToOutputView(i18n().tr("Flashing only supported with sketch version V1.9"))
+                    return
 
             path = os.path.join(os.path.dirname(__file__), "ulp")
             fileName = QFileDialog.getOpenFileName(self, i18n().tr("CAUTION... Flash CAL/ULP File"), path, i18n().tr("CAL Files") + "(*.cal)" + ";;" + i18n().tr("ULP Files") + "(*.ulp)")
